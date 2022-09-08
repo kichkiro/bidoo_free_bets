@@ -46,7 +46,9 @@ class WebPushNotification:
         return msg
 
     def clear(self):
-        pass
+
+        with open(self.logfile_path, 'r+') as file:
+            file.truncate(0)
 
 class Email():
     pass

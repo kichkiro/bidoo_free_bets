@@ -1,7 +1,8 @@
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
 from notification import WebPushNotification
 from pybot import PyBot
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from Secrets import SECRETS
 import time
 
@@ -13,19 +14,19 @@ def main():
     web_push_not = WebPushNotification(LOGFILE_PATH)
     pybot = PyBot(SECRETS.BOT_TOKEN, SECRETS.CHANNEL)
 
-    # Add free_bets to dict
+    # Add free_bets to dict ------------------------------------------->
 
     free_bets = {}
     free_bets = free_bets | web_push_not.read()
 
-    # For each item in dict send a msg to telegram_channel
+    # For each item in dict send a msg to telegram_channel ------------>
 
     for key, value in free_bets.items():
         pybot.send_msg(key, value)
 
-    # Take a free bets with selenium
+    # Take free bets with selenium ------------------------------------>
 
-    driver = webdriver.Chrome(executable_path="web_driver/chromedriver")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
     is_first = 1
     
@@ -33,9 +34,9 @@ def main():
         driver.get(key)
         if is_first:
             driver.find_element(
-                "id", "field_email").send_keys(SECRETS.BIDOO_USER)
+                "id", "field_email").send_keys(SECRETS.BIDOO_USERNAME)
             driver.find_element(
-                "id", "password").send_keys(SECRETS.BIDOO_PASS)
+                "id", "password").send_keys(SECRETS.BIDOO_PASSWORD)
             js='javascript:document.getElementsByClassName("btlogin btn\
                 btn-grey btn-block btn-lg signup-btn")[1].click();\
                 window.open("/checkout")'
@@ -45,10 +46,10 @@ def main():
         time.sleep(5)
         driver.refresh()
  
-    # Clear logfile and email
-    pass
+    # Clear logfile and email ----------------------------------------->
 
-    print(free_bets)
+    web_push_not.clear()
 
 if __name__ == '__main__':
     main()
+    
