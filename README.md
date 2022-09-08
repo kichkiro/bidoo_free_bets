@@ -12,6 +12,9 @@
 └── requirements.txt
 ```
 
+🐍 Python -V = 3.10
+-------
+
 ## What is Bidoo?
 
 Bidoo is a digital auction site that allows you to bid and relaunch in order to win various types of objects, including hi-tech products, from the iPhone to the airpods, from the notebook to the iRobot, and thanks to which you can get up to 99% savings. For purchases of this type, Bidoo is the number one platform in Italy.
@@ -40,4 +43,5 @@ To fully automate this process, on Linux you can use Cronetab, a tool you can us
 
 - [ ] Add support for Email and SMS
 
+<br>
 
