@@ -33,3 +33,9 @@ Bidoo donates about 10-12 bets every day, through different channels (Email, Web
 ## Using Crontab
 
 To fully automate this process, on Linux you can use Cronetab, a tool you can use to schedule script execution at certain times.
+
+# TODO
+
+- Add support for Email and SMS
+
+
