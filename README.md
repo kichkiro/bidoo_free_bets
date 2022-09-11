@@ -2,6 +2,7 @@
 
 ### Project Tree
 ```
+├── .gitignore
 ├── project
 │   ├── main.py
 │   ├── notification.py
@@ -9,6 +10,8 @@
 │   └── Secrets
 │       ├── gmail_api_credentials.json
 │       └── SECRETS.py
+├── pylog.txt
+├── README.md
 └── requirements.txt
 ```
 
@@ -17,7 +20,7 @@
 
 ## What is Bidoo?
 
-Bidoo is a digital auction site that allows you to bid and relaunch in order to win various types of objects, including hi-tech products, from the iPhone to the airpods, from the notebook to the iRobot, and thanks to which you can get up to 99% savings. For purchases of this type, Bidoo is the number one platform in Italy.
+Bidoo is a digital auction site that allows you to bid and relaunch in order to win various types of objects and thanks to which you can get up to 99% savings. For purchases of this type, Bidoo is the number one platform in Italy.
 
 ## Free Bets
 
@@ -35,7 +38,7 @@ Bidoo donates about 10-12 bets every day, through different channels (Email, Web
 
 ## Using Crontab
 
-To fully automate this process, on Linux you can use Cronetab, a tool you can use to schedule script execution at certain times.
+To fully automate this process, on Linux you can use Crontab, this tool is used to schedule the execution of scripts at certain times.
 
 <br>
 
@@ -44,4 +47,3 @@ To fully automate this process, on Linux you can use Cronetab, a tool you can us
 - [ ] Add support for Email and SMS
 
 <br>
-

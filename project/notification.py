@@ -1,12 +1,10 @@
 class WebPushNotification:
-    """
-    """
+    
     def __init__(self, logfile_path: str):
         self.logfile_path = logfile_path
 
     def read(self) -> dict:
-        """
-        """
+
         msg = {}
         body_substring = "Puntat"
         url_substring = "https://it.bidoo.com/gest_cod.php?"
