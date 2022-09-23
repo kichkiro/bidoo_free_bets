@@ -1,3 +1,6 @@
+class Email:
+    pass
+
 class WebPushNotification:
     
     def __init__(self, logfile_path: str):
@@ -7,7 +10,11 @@ class WebPushNotification:
 
         msg = {}
         body_substring = "Puntat"
-        url_substring = "https://it.bidoo.com/gest_cod.php?"
+        url_substring = [
+            "https://it.bidoo.com/gest_cod.php?",
+            "https://es.bidoo.com/gest_cod.php?",
+        ] 
+
 
         with open(self.logfile_path, 'rb') as file:
 
@@ -16,9 +23,11 @@ class WebPushNotification:
                 # Find URL (key)
                 url, skip = "", 3
                 for char in row:
-                    if char == 34 and url_substring in url:
+                    if char == 34 and (url_substring[0] in url or \
+                        url_substring[1] in url):
                         break
-                    elif char == 34 and url_substring not in url:
+                    elif char == 34 and (url_substring[0] not in url or \
+                        url_substring[1] not in url):
                         url, skip = "", 3
                     if skip > 0:
                         skip -= 1
@@ -39,7 +48,7 @@ class WebPushNotification:
                 # Add to dict
                 if body_substring not in body:
                     body = "1 Puntata"
-                if url_substring in url:
+                if url_substring[0] in url or url_substring[1] in url:
                     msg[url] = body
         return msg
 
@@ -47,9 +56,6 @@ class WebPushNotification:
 
         with open(self.logfile_path, 'r+') as file:
             file.truncate(0)
-
-class Email():
-    pass
 
 class SMS():
     pass

@@ -4,3 +4,5 @@ pylog.txt
 
 # Secrets
 project/Secrets
+
+project/email_test.py
