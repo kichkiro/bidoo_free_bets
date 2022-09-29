@@ -2,17 +2,20 @@
 
 ### Project Tree
 ```
-├── .gitignore
+├── config
+│   ├── config.cfg
+│   └── ms_graph_api_token.json
+├── logs
+│   ├── errors.log
+│   └── history.log
 ├── project
 │   ├── main.py
 │   ├── notification.py
-│   ├── pybot.py
-│   └── Secrets
-│       ├── gmail_api_credentials.json
-│       └── SECRETS.py
-├── pylog.txt
+│   └── pybot.py
+├── .gitignore
 ├── README.md
 └── requirements.txt
+
 ```
 
 🐍 Python -V = 3.10

@@ -1,8 +1,8 @@
 # Python
 project/__pycache__
-pylog.txt
 
 # Secrets
-project/Secrets
+config
 
-project/email_test.py
+# Logs
+logs

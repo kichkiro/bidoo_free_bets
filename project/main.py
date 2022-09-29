@@ -1,40 +1,58 @@
 # Stdlib
 import time
-from datetime import datetime
-# Extlib (requiremnts.txt)
+import logging
+from configparser import ConfigParser
+
+# Extlib (requirements.txt)
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from pyvirtualdisplay import Display
+
 # My Modules
 from notification import WebPushNotification, Email
 from pybot import PyBot
-from Secrets import SECRETS
+
+
+# Logging settings
+logging.basicConfig(
+    filename='../logs/errors.log',
+    level=logging.ERROR, 
+    format='\n[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - '\
+        '%(message)s',
+    datefmt='%H:%M:%S'
+)
+
+# Config settings
+config = ConfigParser()
+config.read('../config/config.cfg')
+web_notification_settings = config['web_notification']
+telegram_settings = config['telegram']
+bidoo_settings = config['bidoo']
+azure_settings = config['azure']
 
 def main():
 
     # Add free_bets to a dict ----------------------------------------->
     try:
-        web_push_not = WebPushNotification(SECRETS.NOTIFICATION_LOGFILE_PATH)
+        web_push_not = WebPushNotification(web_notification_settings)
         free_bets = {}
         free_bets = free_bets | web_push_not.read()
 
-    except BaseException as error:
-        with open(SECRETS.ERROR_LOGFILE_PATH, "a") as file:
-            file.write(f"{datetime.now()} - {str(error)}\n")
+    except BaseException:
+        logging.error("Exception occurred", exc_info=True)
 
     # For each item in dict send a msg to telegram_channel ------------>
     try:
-        pybot = PyBot(SECRETS.BOT_TOKEN, SECRETS.CHANNEL)
+        pybot = PyBot(telegram_settings)
 
         for key, value in free_bets.items():
             pybot.send_msg(key, value)
 
-    except BaseException as error:
-        with open(SECRETS.ERROR_LOGFILE_PATH, "a") as file:
-            file.write(f"{datetime.now()} - {str(error)}\n")
-
+    except BaseException:
+        logging.error("Exception occurred", exc_info=True)
+    
     # Take free bets with Selenium ------------------------------------>
 
     try:
@@ -46,10 +64,10 @@ def main():
             for key, value in free_bets.items():
                 driver.get(key)
                 if is_first:
-                    driver.find_element(
-                        "id", "field_email").send_keys(SECRETS.BIDOO_USERNAME)
-                    driver.find_element(
-                        "id", "password").send_keys(SECRETS.BIDOO_PASSWORD)
+                    driver.find_element("id", "field_email").send_keys(
+                        bidoo_settings["USERNAME"])
+                    driver.find_element("id", "password").send_keys(
+                        bidoo_settings["PASSWORD"])
                     js = 'javascript:document.getElementsByClassName("btlogin \
                         btn btn-grey btn-block btn-lg signup-btn")[1].click();\
                         window.open("/checkout")'
@@ -61,13 +79,13 @@ def main():
 
             driver.close()
 
-    except BaseException as error:
-        with open(SECRETS.ERROR_LOGFILE_PATH, "a") as file:
-            file.write(f"{datetime.now()} - {str(error)}\n")
-
+    except BaseException:
+        logging.error("Exception occurred", exc_info=True)
+    
     # Clear logfile and email ----------------------------------------->
 
     web_push_not.clear()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
