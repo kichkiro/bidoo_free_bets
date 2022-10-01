@@ -89,22 +89,29 @@ class Email:
 
 class WebPushNotification:
     """
-    
+    This class encloses the methods for "read" and "clean" the web push 
+    notifications stored in logfile, for example the google-chrome push 
+    notifications in Ubuntu 22.04LTS are located at the path: 
+    "~/.config/google-chrome/Default/Platform Notifications/000003.log" 
+    for ms-edge in Windows 11 are in: "~\AppData\Local\Microsoft\Edge\
+    User Data\Default\EdgePushStorageWithWinRt\000003.log"
     """
     settings: SectionProxy
 
     def __init__(self, config: SectionProxy) -> None:
         self.settings = config
         self.logfile_path = self.settings["NOTIFICATION_LOGFILE_PATH"]
-        self.history_path = '../logs/history.log'
+        self.history_path = self.settings["HISTORY_LOG_PATH"]
 
     def read(self) -> dict:
         """
-        
+        Search the log file to locate, by substrings, the link of the 
+        bet (url) and the number of bets that contains the link (body).
         """
         def duplicate(url: str, history_path: str) -> int:
             """
-            
+            Checks if a link is not a duplicate and does so by comparing 
+            it with the previous links stored in history.log
             """
             with open(history_path, 'r+') as history:
                 for row in history:
@@ -112,24 +119,6 @@ class WebPushNotification:
                         return 1
                 history.write(f"{url}\n")
                 return 0
-
-        def add_fire(body: str) -> str:
-            """
-            
-            """
-            n = ''
-            for char in body:
-                if char != ' ':
-                    n += char
-                else:
-                    break
-            n = int(n)
-            if n != 1:
-                new_body = f"{body} "
-                for _ in range(n):
-                    new_body += "🔥"
-                return new_body
-            return body
 
         msg = {}
         body_substring = "Puntat"
@@ -171,12 +160,12 @@ class WebPushNotification:
                     body = "1 Puntata"
                 if url_substring[0] in url or url_substring[1] in url:
                     if not duplicate(url, self.history_path):
-                        msg[url] = add_fire(body)
+                        msg[url] = body
         return msg
 
-    def clear(self):
+    def clear(self) -> None:
         """
-            
+        Clean the log file.
         """
         with open(self.logfile_path, "r+") as file:
             file.truncate(0)

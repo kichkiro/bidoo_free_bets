@@ -6,7 +6,6 @@ from configparser import ConfigParser
 # Extlib (requirements.txt)
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from pyvirtualdisplay import Display
 
@@ -15,28 +14,28 @@ from notification import WebPushNotification, Email
 from pybot import PyBot
 
 
-# Logging settings
-logging.basicConfig(
-    filename='../logs/errors.log',
-    level=logging.ERROR, 
-    format='\n[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - '\
-        '%(message)s',
-    datefmt='%H:%M:%S'
-)
-
-# Config settings
-config = ConfigParser()
-config.read('../config/config.cfg')
-web_notification_settings = config['web_notification']
-telegram_settings = config['telegram']
-bidoo_settings = config['bidoo']
-azure_settings = config['azure']
-
 def main():
+
+    # Config settings ------------------------------------------------->
+    config = ConfigParser()
+    config.read('../config/config.cfg')
+    path_config = config['path']
+    telegram_settings = config['telegram']
+    bidoo_settings = config['bidoo']
+    azure_settings = config['azure']
+
+    # Logging settings ------------------------------------------------>
+    logging.basicConfig(
+        filename=path_config['ERRORS_LOG_PATH'],
+        level=logging.ERROR, 
+        format='\n[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - '\
+            '%(message)s',
+        datefmt='%H:%M:%S'
+    )
 
     # Add free_bets to a dict ----------------------------------------->
     try:
-        web_push_not = WebPushNotification(web_notification_settings)
+        web_push_not = WebPushNotification(path_config)
         free_bets = {}
         free_bets = free_bets | web_push_not.read()
 
@@ -54,7 +53,6 @@ def main():
         logging.error("Exception occurred", exc_info=True)
     
     # Take free bets with Selenium ------------------------------------>
-
     try:
         with Display(visible=False, size=(1200, 1500)):
             driver = webdriver.Chrome(
@@ -83,7 +81,6 @@ def main():
         logging.error("Exception occurred", exc_info=True)
     
     # Clear logfile and email ----------------------------------------->
-
     web_push_not.clear()
 
 
