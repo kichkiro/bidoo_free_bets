@@ -1,7 +1,5 @@
 python-telegram-bot==13.14
-google-api-python-client==2.60.0
-google-auth-httplib2==0.1.0
-google-auth-oauthlib==0.5.2
 selenium==4.4.3
 webdriver-manager==3.8.3
 PyVirtualDisplay==3.0
+msal==1.19.0
