@@ -33,7 +33,7 @@ Bidoo donates about 10-12 bets every day, through different channels (Email, Web
 
 1 - Reads and takes bets from different channels (Web Push Notification, Email ...) and enters them in a dictionary.
 
-2 - Send links for bets on a telegram channel (for a public utility service) [Link Channel](https://t.me/bidoo_puntate_gratis "Bidoo - Puntate Gratis").
+2 - Send links for bets on a telegram channel (for a public utility service).
 
 3 - Claim all bets in the dictionary on the Bidoo site via Selenium.
 
